@@ -1,4 +1,4 @@
-package wood.mike.functional;
+package wood.mike.functional.collections;
 
 import java.util.Arrays;
 import java.util.List;

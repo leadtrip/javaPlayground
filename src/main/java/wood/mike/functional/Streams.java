@@ -445,7 +445,7 @@ public class Streams {
                 listOfLists.stream()
                         .flatMapToInt(childList ->
                                 childList.stream()
-                                        .mapToInt(Integer::new));
+                                        .mapToInt(Integer::parseInt));
         //let's peek and find sum of the elements
         int sum = intStream.peek(System.out::println)
                 .sum();
