@@ -49,8 +49,9 @@ public class ImplementingComparator {
 
         // here we're making use of the static convenience comparing method in Comparator
         final Function<Person, String> byName = person -> person.getName();
+        printPeople("By name:",
         people.stream()
-                .sorted(comparing((byName)));
+                .sorted(comparing((byName))).collect(toList()));
 
         // now sorting by multiple comparisons
         final Function<Person, Long> byAge = Person::getAge;
@@ -65,5 +66,6 @@ public class ImplementingComparator {
             final String message, final List<Person> people) {
         System.out.println(message);
         people.forEach(System.out::println);
+        System.out.println("-------------------");
     }
 }
