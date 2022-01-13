@@ -13,9 +13,6 @@ import java.time.Duration;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-/**
- * Features added with Java 11
- */
 public class Java11Features {
 
     public static void main(String[] args) throws Exception{
