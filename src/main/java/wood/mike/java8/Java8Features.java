@@ -14,14 +14,15 @@ public class Java8Features {
 
     static void interfaceChanges() {
         var bmw = new BMW();
-        System.out.printf( "%s is %s%n", bmw.brand(), BmwGroup.brandingTag() );
+        System.out.println( bmw.brandingTag() );
 
         var rr = new RollsRoyce();
-        System.out.printf("%s is owned by %s%n", rr.brand(), rr.groupName());
+        System.out.printf("%s is owned by %s%n", rr.brand(), BmwGroup.groupName());
 
         // here we make use of the functional interface and create a lambda expression for Mini
         BmwGroup mini = () -> { return "Mini"; };
-        System.out.printf("%s is yet another %s brand%n", mini.brand(), mini.groupName());
+        System.out.printf("%s is yet another %s brand%n", mini.brand(), BmwGroup.groupName());
+        System.out.println( mini.brandingTag() );
 
         // You use lambda expressions to create anonymous methods. Sometimes, however, a lambda expression does nothing but call an existing method.
         // In those cases, it's often clearer to refer to the existing method by name.
@@ -34,16 +35,16 @@ public class Java8Features {
 
     /**
      * Interfaces can have default and static methods
-     * This one only has a single abstract method so it can be a functional interface too
+     * This one only has a single abstract method, so it is functional interface too
      */
     @FunctionalInterface
     interface BmwGroup{
-        default String groupName() {
+        static String groupName() {
             return "BMW group";
         }
 
-        static String brandingTag() {
-            return "a BMW group company";
+        default String brandingTag() {
+            return String.format( "%s a %s company", brand(), groupName() );
         }
 
         String brand();
