@@ -1,6 +1,7 @@
 package wood.mike.java8;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -10,6 +11,8 @@ public class Java8Features {
 
     public static void main(String[] args) {
         interfaceChanges();
+        streamApi();
+        forEach();
     }
 
     static void interfaceChanges() {
@@ -62,4 +65,28 @@ public class Java8Features {
         }
     }
 
+    /**
+     * Tons of examples elsewhere in this project, here's a few anyway
+     */
+    private static void streamApi() {
+
+    }
+
+    /**
+     * forEach added to Iterable, accepts Consumer and applies action on each element
+     */
+    private static void forEach() {
+        Consumer<Integer> longHexPrinter = i -> System.out.printf( "0x%08X%n", i );     // lambda style Consumer
+
+        Consumer<Integer> shortHexPrinter = new Consumer<Integer>() {       // full definition style Consumer
+            @Override
+            public void accept(Integer i) {
+                System.out.printf( "0x%04X%n", i );
+            }
+        };
+
+        var numberList = List.of( 1, 2, 3, 4 );
+        numberList.forEach(longHexPrinter);
+        numberList.forEach(shortHexPrinter);
+    }
 }
