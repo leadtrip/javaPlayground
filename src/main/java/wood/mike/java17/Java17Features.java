@@ -6,10 +6,11 @@ import java.util.List;
 
 public class Java17Features {
     public static void main(String[] args) {
-        switchPatternMatching();
+        Java17Features java17Features = new Java17Features();
+        java17Features.switchPatternMatching();
     }
 
-    private static void switchPatternMatching() {
+    private void switchPatternMatching() {
         patternMatch(983129 );
         patternMatch(8989180120303L );
         patternMatch( "stringy" );
@@ -70,21 +71,35 @@ public class Java17Features {
      */
     private static void patternMatchingCompleteness( BatteryLife b ) {
         switch (b) {
-            case Fenix6 f -> System.out.println(f.averageBatteryLifeHours());
-            case Pace2 p -> System.out.println(p.averageBatteryLifeHours());
+            case Fenix6 f -> f.playMusic();
+            case Pace2 p -> p.trainWithPower();
             // no need for default, every case has been captured although this could be added and a case above removed which isn't a compilation issue
         }
     }
 
-    sealed interface Watch extends BatteryLife {
-        void playMusic();
+    sealed abstract class Watch implements BatteryLife {
+        void stopWatch() {
+            System.out.println("Stopwatch running");
+        }
+
+        void trainWithHeartRate(){
+            System.out.println("Run 20 minutes at 130-150 BPM");
+        }
     }
 
     sealed interface BatteryLife permits Watch {
         Integer averageBatteryLifeHours();
     }
 
-    static final class Fenix6 implements Watch {
+    sealed abstract class Garmin extends Watch {
+        abstract void playMusic();
+    }
+
+    sealed abstract class Coros extends Watch{
+        abstract void trainWithPower();
+    }
+
+    final class Fenix6 extends Garmin {
         public Integer averageBatteryLifeHours() {
             return 10 * 24 * 60;
         }
@@ -95,14 +110,14 @@ public class Java17Features {
         }
     }
 
-    static final class Pace2 implements Watch {
+    final class Pace2 extends Coros {
         public Integer averageBatteryLifeHours() {
             return 12 * 24 * 60;
         }
 
         @Override
-        public void playMusic() {
-            System.out.println("Feature not available");
+        void trainWithPower() {
+            System.out.println("Run 30 minutes at 300 watts");
         }
     }
 }
