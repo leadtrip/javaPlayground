@@ -75,7 +75,10 @@ public class ComparingClassesWithAndWithoutEqualsAndHashcode {
         Gson gson = new Gson();
         return gson.fromJson( gson.toJson( theObject ), theClass );
     }
-    
+
+    /**
+     * Simple class with a couple of fields and no equals or hashcode so reliant on default
+     */
     private static class NoEqualsAndHashcode {
         String name;
         Integer sku;
@@ -94,6 +97,9 @@ public class ComparingClassesWithAndWithoutEqualsAndHashcode {
         }
     }
 
+    /**
+     * Simple class with a couple of fields with equals and hashcode created by intellij
+     */
     private static class HasEqualsAndHashcode {
         String name;
         Integer sku;
