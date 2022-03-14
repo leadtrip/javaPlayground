@@ -1,6 +1,7 @@
 package wood.mike.reactive;
 
 import lombok.extern.slf4j.Slf4j;
+import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
@@ -40,12 +41,13 @@ import java.util.stream.Stream;
  * his is achieved internally by a single request signal from the Subscriber that is propagated upstream, all the way back to the source Publisher.
  */
 @Slf4j
-public class ReactorTesting {
+public class ProjectReactor {
 
     private static final List<String> WORDS = List.of( "the", "total", "number", "of", "stars", "in", "the", "universe", "is", "greater", "than", "all", "the", "grains", "of", "sand", "on", "all", "the", "beaches", "of", "the", "planet", "Earth" );
 
     public static void main(String[] args) throws InterruptedException {
-        ReactorTesting rt = new ReactorTesting();
+        ProjectReactor rt = new ProjectReactor();
+        rt.publishers();
 /*        rt.fluxCreation();
         rt.withDelay();
         rt.monoCreation();
@@ -53,14 +55,41 @@ public class ReactorTesting {
         rt.subscribeWithErrorHandler();
         rt.subscribeWithErrorAndCompletionHandling();
         rt.publishAndConsume();
-        rt.threadTest();*/
-        rt.threadTestStream();
+        rt.threadTest();
+        rt.threadTestStream();*/
+    }
+
+    // Flux and Mono are both Publishers
+    // Flux handles 0..n and Mono 0..1
+    private void publishers() {
+        Publisher<String> jupiterMoons = Flux.just( "europa", "ganymede", "io" );
+        Publisher<String> earthMoons = Mono.just( "moon" );
+    }
+
+    private void monoCreation() {
+        Mono<String> stream1 = Mono.just("One");
+        Mono<String> stream2 = Mono.justOrEmpty(null);
+        Mono<String> stream3 = Mono.justOrEmpty(Optional.empty());
+        Mono<String> stream4 = Mono.fromCallable(() -> httpRequest());
+        Mono<String> stream5 = Mono.fromCallable(this::httpRequest);
+
+        Mono.firstWithValue(
+                        Mono.just(1).map(integer -> "foo" + integer),
+                        Mono.delay(Duration.ofMillis(100)).thenReturn("bar")
+                )
+                .subscribe(System.out::println);
+    }
+
+    private String httpRequest() {
+        log.info("Making HTTP request");
+        throw new RuntimeException("IO error");
     }
 
     /**
      * All of these examples use pull rather than push because the data is readily available in memory
      */
     private void fluxCreation() {
+        // iterable
         Flux<String> listFlux = Flux.fromIterable(WORDS);
         listFlux.filter(s -> s.length() > 3)
                 .sort()
@@ -71,21 +100,28 @@ public class ReactorTesting {
                 .sort()
                 .subscribe(System.out::println);
 
+        // array
         Flux<String> arrayFlux = Flux.fromArray(WORDS.toArray(new String[0]));
         arrayFlux
                 .take(3)
                 .map(String::toUpperCase)
                 .subscribe(System.out::println);
 
+        // varargs
         Flux<Integer> varargsFlux = Flux.just(1, 2, 3);
         varargsFlux
                 .sort(Comparator.reverseOrder())
                 .subscribe(System.out::println);
 
-
+        // just
         Flux<Person> just1Flux = Flux.just(new Person.PersonBuilder("Carl", "Sagan").dob("1934-11-09").build());
         just1Flux.map(Person::getDob)
                 .subscribe(System.out::println);
+
+        // range
+        Flux<Integer> rangeFlux =
+                Flux.range(1, 500);
+        rangeFlux.subscribe(System.out::println);
     }
 
     /**
@@ -105,60 +141,6 @@ public class ReactorTesting {
         Thread.sleep(1500);
     }
 
-    public Flux<Integer> publishAndConsume() throws InterruptedException {
-        List<Integer> integerList = new ArrayList<>();
-
-        Consumer<String> stringConsumer = s -> {
-            System.out.printf("%s Adding %s length to list%n", LocalTime.now(), s );
-            integerList.add( s.length() );
-        };
-
-        Subscriber<String> stringSubscriber = new Subscriber<>() {
-            Subscription subscription;
-
-            @Override
-            public void onSubscribe(Subscription subscription) {
-                System.out.println("Subscribing");
-                this.subscription = subscription;
-                subscription.request(1);
-            }
-
-            @Override
-            public void onNext(String s) {
-                subscription.request(1);
-                System.out.printf("%s Adding %s length to list%n", LocalTime.now(), s);
-                integerList.add(s.length());
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-
-            }
-
-            @Override
-            public void onComplete() {
-                System.out.println("Complete");
-            }
-        };
-
-        Flux<String> listFlux = Flux.fromIterable(WORDS);
-        listFlux.filter(s -> s.length() > 3)
-                .delayElements(Duration.of(500, ChronoUnit.MILLIS))
-                .sort()
-                .subscribe(stringSubscriber);
-
-
-        return Flux.fromIterable( integerList );
-    }
-
-    private void monoCreation() {
-        Mono.firstWithValue(
-                Mono.just(1).map(integer -> "foo" + integer),
-                Mono.delay(Duration.ofMillis(100)).thenReturn("bar")
-                )
-                .subscribe(System.out::println);
-    }
-
     private void subscribeWithErrorHandler() {
         Flux<Integer> ints = Flux.range(1, 4)
                 .map(i -> {
@@ -171,9 +153,9 @@ public class ReactorTesting {
 
     private void subscribeWithErrorAndCompletionHandling() {
         Flux<Integer> ints = Flux.range(1, 4);
-        ints.subscribe(System.out::println,
-                error -> System.err.println("Error " + error),
-                () -> System.out.println("Done"));
+        ints.subscribe(System.out::println,                     // standard consumer
+                error -> System.err.println("Error " + error),  // error consumer
+                () -> System.out.println("Done"));              // completion consumer
     }
 
     /**
