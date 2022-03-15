@@ -1,5 +1,7 @@
 package wood.mike.helper;
 
+import lombok.Builder;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -73,6 +75,12 @@ public class Person {
         public PersonBuilder( final String fn, final String sn ) {
             forename = fn;
             surname = sn;
+        }
+
+        public PersonBuilder( final String fn, final String sn, final String db ) {
+            forename = fn;
+            surname = sn;
+            dob(db);
         }
 
         public PersonBuilder dob( final String db ) {

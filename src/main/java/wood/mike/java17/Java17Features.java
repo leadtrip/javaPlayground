@@ -14,7 +14,7 @@ public class Java17Features {
         patternMatch(983129 );
         patternMatch(8989180120303L );
         patternMatch( "stringy" );
-        patternMatch( new Person.PersonBuilder( "Ed", "The duck" ).dob( "1901-03-22" ).build() );
+        patternMatch( new Person.PersonBuilder( "Ed", "The duck", "1901-03-22" ).build() );
         patternMatch(null );
 
         patternMatchDominance(new ArrayIndexOutOfBoundsException());

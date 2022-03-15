@@ -33,6 +33,7 @@
         <slf4j-api.version>1.7.36</slf4j-api.version>
         <junit-jupiter-engine.version>5.8.2</junit-jupiter-engine.version>
         <junit-platform-launcher.version>1.8.2</junit-platform-launcher.version>
+        <netty-all.version>4.1.75.Final</netty-all.version>
     </properties>
 
     <dependencies>
@@ -104,6 +105,11 @@
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-engine</artifactId>
             <version>${junit-platform-launcher.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty-all.version}</version>
         </dependency>
     </dependencies>
 
