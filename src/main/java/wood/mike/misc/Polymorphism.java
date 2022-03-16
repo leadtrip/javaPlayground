@@ -26,20 +26,20 @@ public class Polymorphism {
         var kg = 100;
         var oneRm = 100;
         Exercise exercise = new Deadlift();
-        System.out.printf( "Deadlifting %skg, for %s reps, current 1RM %skg, RPE is %s%n", kg, reps, oneRm, exercise.rpeDescription( reps, kg, oneRm ) );
+        exercise.describe(reps, kg, oneRm);
 
         kg = 15;
         oneRm = 30;
         exercise = new DubellCurl();
-        System.out.printf( "Dumbell curling %skg, for %s reps, current 1RM %skg, RPE is %s%n", kg, reps, oneRm, exercise.rpeDescription( reps, kg, oneRm ) );
+        exercise.describe(reps, kg, oneRm);
     }
 }
 
 interface Exercise {
     Integer MAX_RPE = 10;
 
-    default void perform() {
-        System.out.println( "Grrr" );
+    default String perform() {
+        return "Exercising";
     }
 
     Integer difficulty();
@@ -85,13 +85,16 @@ interface Exercise {
         return (kg / currentOneRepMax * MAX_RPE) + reps;
     }
 
+    default void describe( final Integer reps, final Integer kg, final Integer currentOneRepMax ) {
+        System.out.printf( "%s %skg, for %s reps, current 1RM %skg, RPE is %s%n", perform(), kg, reps, currentOneRepMax, rpeDescription( reps, kg, currentOneRepMax ) );
+    }
 }
 
 class Deadlift implements Exercise {
 
     @Override
-    public void perform() {
-        System.out.println( "Deadlifting" );
+    public String  perform() {
+        return "Deadlifting";
     }
 
     @Override
@@ -109,8 +112,8 @@ class Squat implements Exercise {
 
 class Crunch implements Exercise {
     @Override
-    public void perform() {
-        System.out.println( "Crunching" );
+    public String perform() {
+        return  "Crunching";
     }
 
     @Override
@@ -121,8 +124,8 @@ class Crunch implements Exercise {
 
 class BenchPress implements Exercise {
     @Override
-    public void perform() {
-        System.out.println( "Pressing" );
+    public String perform() {
+        return  "Bench pressing";
     }
 
     @Override
@@ -134,8 +137,8 @@ class BenchPress implements Exercise {
 class DubellCurl implements Exercise {
 
     @Override
-    public void perform() {
-        System.out.println( "Dumbell curling" );
+    public String perform() {
+        return "Dumbell curling";
     }
 
     @Override
