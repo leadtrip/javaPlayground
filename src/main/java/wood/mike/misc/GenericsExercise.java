@@ -1,5 +1,6 @@
 package wood.mike.misc;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import lombok.ToString;
 import wood.mike.helper.Person;
 
@@ -41,7 +42,15 @@ public class GenericsExercise {
         Xob<AtomicInteger> atomicIntegerXob = numberXob(new AtomicInteger(2));
         Xob<Byte> byteXob = numberXob((byte) 3);
 
-        Long integerXobSum = numberXobSum(of(numberXob(1), numberXob(21231212), numberXob(991)));
+        Xob<Number> nuXob1 = numberXob( 124 );
+        Xob<Number> nuXob2 = numberXob( 125.5 );
+        Xob<Number> nuXob3 = numberXob( (short) '~' );
+        Xob<Number> nuXob4 = numberXob( (byte) 127 );
+        Xob<Number> nuXob5 = numberXob( new AtomicDouble(128));
+        Long nuXobSum = numberXobSum( of( nuXob1, nuXob2, nuXob3, nuXob4, nuXob5 ) );
+        System.out.printf("Number Xob sum %s%n", nuXobSum );
+
+        Long integerXobSum = numberXobSum(of(numberXob(1), numberXob(3), numberXob(-4)));
         Long floatXobSum = numberXobSum(of(numberXob(2.4), numberXob(993.12), numberXob(9.11)));
         Long longXobSum = numberXobSum(of(numberXob(29108320130120L), numberXob(2893812038120381L)));
         Long atomicLongXobSum = numberXobSum(of(numberXob(new AtomicLong(901830218)), numberXob(new AtomicLong(9898))));
