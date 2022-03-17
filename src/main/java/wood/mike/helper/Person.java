@@ -66,6 +66,22 @@ public class Person {
         return String.format("%s - %d%s", getName(), getAge(), getDod() != null ? " (DOD " + dod.getYear() + ")" : "");
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(forename, person.forename)
+                && Objects.equals(surname, person.surname)
+                && Objects.equals(dob, person.dob)
+                && Objects.equals(dod, person.dod);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(forename, surname, dob, dod);
+    }
+
     public static class PersonBuilder {
         private final String forename;
         private final String surname;
