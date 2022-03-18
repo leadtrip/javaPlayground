@@ -5,7 +5,6 @@ import lombok.ToString;
 import wood.mike.helper.Person;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -100,6 +99,14 @@ public class GenericsExercise {
                 .peek(System.out::println)
                 .sum();
     }
+
+    /**
+     * T is explicitly specified and U is inferred
+     */
+    private static void genericConstructor() {
+        Pleb<Integer> p1 = new Pleb<>(1, "hey");
+        Pleb<String> p2 = new Pleb<>("yo", 2);
+    }
 }
 
 @ToString
@@ -112,5 +119,12 @@ class Xob<T> {
 
     T getContents() {
         return contents;
+    }
+}
+
+class Pleb<T> {
+    T t;
+    <U> Pleb( T ttt, U uuu ) {
+        // constructors can declare their own formal type parameters
     }
 }
