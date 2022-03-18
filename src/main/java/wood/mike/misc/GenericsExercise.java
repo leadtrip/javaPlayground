@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import lombok.ToString;
 import wood.mike.helper.Person;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +42,15 @@ public class GenericsExercise {
         Xob<Double> doubleXob = numberXob(2.5);
         Xob<AtomicInteger> atomicIntegerXob = numberXob(new AtomicInteger(2));
         Xob<Byte> byteXob = numberXob((byte) 3);
+        Xob<Float> floatXob = numberXob(22.2F);
+        Xob<?> wildCardXob = numberXob(0b00110);
+        Xob<Long> hexXob = numberXob(0xFF_EE_DD_CC_BB_AAL);
+        Xob<BigInteger> bigIntegerXob = numberXob(BigInteger.ONE);
 
+        numberXobSum( of( integerXob ) );       // this is fine & any number more of Integer type Xobs
+        //numberXobSum( of( integerXob, longXob ) );  // but can't mix & types
+
+        // have to use Number as Xob type parameter to allow mixing of contents
         Xob<Number> nuXob1 = numberXob( 124 );
         Xob<Number> nuXob2 = numberXob( 125.5 );
         Xob<Number> nuXob3 = numberXob( (short) '~' );
