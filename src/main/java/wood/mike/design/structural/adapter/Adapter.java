@@ -1,102 +1,108 @@
 package wood.mike.design.structural.adapter;
 
-/**
- * Adapter pattern
- */
 public class Adapter {
+    public static void main(String[] args) {
+        var vgaMonitor = new VgaMonitor() {};
+        PC pentium2Pc = new Pentium2Pc(vgaMonitor);
+        pentium2Pc.turnOn();
 
-        static void useAnalogueMonitor(AnalogueMonitor analogueMonitor) {
-            analogueMonitor.useVga();
-            analogueMonitor.display();
-        }
+        var dviMonitor = new DviMonitor() {};
+        PC pentium4Pc = new Pentium4Pc(dviMonitor, vgaMonitor);
+        pentium4Pc.turnOn();
 
-        static void useDigitalMonitor(DigitalMonitor digitalMonitor) {
-            digitalMonitor.useDvi();
-            digitalMonitor.display();
-        }
-
-        public static void main(String[] args) {
-            CRT crt = new CRT();
-            LCD lcd = new LCD();
-
-            System.out.println("Using analogue monitor with VGA");
-            useAnalogueMonitor(crt);
-
-            System.out.println("Using digital monitor with DVI");
-            useDigitalMonitor(lcd);
-
-            System.out.println("Using analogue monitor with DVI");
-            useDigitalMonitor(new AnalogueToDigitalAdapter (crt));
-        }
-
-}
-
-interface AnalogueMonitor {
-    void display();
-    void useVga();
-}
-
-interface DigitalMonitor {
-    void display();
-    void useDvi();
-}
-
-class CRT implements AnalogueMonitor{
-    private boolean connector;
-
-    @Override
-    public void display() {
-        if (connector) {
-            System.out.println("Display turned on");
-            System.out.println("Display turned off");
-        } else {
-            System.out.println("Connect VGA first");
-        }
-    }
-
-    @Override
-    public void useVga() {
-        connector = true;
-        System.out.println("VGA connected");
+        DviToVgaAdapter dviToVgaAdapter = new DviToVgaAdapter(dviMonitor);
+        PC pentium2Pc1 = new Pentium2Pc(dviToVgaAdapter);
+        pentium2Pc1.turnOn();
     }
 }
 
-class LCD implements DigitalMonitor{
-    private boolean connector;
+
+interface VgaMonitor {
+    default void render(){
+        System.out.println("Rendering analog display");
+    }
+}
+
+interface DviMonitor {
+    default void render() {
+        System.out.println("Rendering display digitally");
+    }
+}
+
+interface PC {
+    void turnOn();
+    default void renderDigital() {
+        throw new UnsupportedOperationException("Digital not supported");
+    };
+    default void renderAnalog() {
+        throw new UnsupportedOperationException("Analog not supported");
+    }
+}
+
+class Pentium2Pc implements PC{
+    VgaMonitor monitor;
+
+    public Pentium2Pc(VgaMonitor monitor) {
+        this.monitor = monitor;
+    }
 
     @Override
-    public void display() {
-        if (connector) {
-            System.out.println("Display turned on");
-            System.out.println("Display turned off");
-        } else {
-            System.out.println("Connect DVI first");
+    public void renderAnalog() {
+        monitor.render();
+    }
+
+    @Override
+    public void turnOn() {
+        System.out.println("P2 PC turned on");
+        renderAnalog();
+    }
+}
+
+class Pentium4Pc implements PC{
+    DviMonitor dviMonitor;
+    VgaMonitor vgaMonitor;
+
+    public Pentium4Pc(DviMonitor dviMonitor) {
+        this.dviMonitor = dviMonitor;
+    }
+
+    public Pentium4Pc(DviMonitor dviMonitor, VgaMonitor vgaMonitor) {
+        this.dviMonitor = dviMonitor;
+        this.vgaMonitor = vgaMonitor;
+    }
+
+    @Override
+    public void renderDigital() {
+        if( dviMonitor != null ) {
+            dviMonitor.render();
         }
     }
 
     @Override
-    public void useDvi() {
-        connector = true;
-        System.out.println("DVI connected");
+    public void renderAnalog() {
+        if( vgaMonitor != null ) {
+            vgaMonitor.render();
+        }
+    }
+
+    @Override
+    public void turnOn() {
+        System.out.println("P4 PC turned on");
+        renderAnalog();
+        renderDigital();
     }
 }
 
-class AnalogueToDigitalAdapter implements DigitalMonitor {
-    private final AnalogueMonitor analogueMonitor;
+class DviToVgaAdapter implements VgaMonitor {
 
-    public AnalogueToDigitalAdapter(AnalogueMonitor analogueMonitor) {
-        this.analogueMonitor = analogueMonitor;
+    private final DviMonitor connector;
+
+    public DviToVgaAdapter( DviMonitor connector ) {
+        this.connector = connector;
     }
 
     @Override
-    public void display() {
-        analogueMonitor.display();
+    public void render() {
+        connector.render();
     }
-
-    @Override
-    public void useDvi() {
-        System.out.println("DVI connected");
-        analogueMonitor.useVga();
-    }
-
 }
