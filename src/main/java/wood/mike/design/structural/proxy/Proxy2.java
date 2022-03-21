@@ -7,8 +7,8 @@ package wood.mike.design.structural.proxy;
 public class Proxy2 {
     public static void main(String[] args) {
         SmartCard smartCard = new ProxySmartCard();
-        System.out.println( smartCard.getId() );
-        System.out.println( smartCard.getId() );
+        System.out.println( smartCard.getId() );        // first call accesses reader/card
+        System.out.println( smartCard.getId() );        // subsequent calls fetch cached value
     }
 }
 

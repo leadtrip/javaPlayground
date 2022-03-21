@@ -5,6 +5,6 @@ package wood.mike.design.structural.bridge;
  */
 public class Bridge {
     public static void main(String[] args) {
-
+        // TODO
     }
 }
