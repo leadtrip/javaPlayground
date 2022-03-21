@@ -2,6 +2,7 @@ package wood.mike.design.structural.proxy;
 
 /**
  * Example of proxy wrapping access to heavyweight resource
+ * In real world there'd be readers involved but for simplicity they've been omitted
  */
 public class Proxy2 {
     public static void main(String[] args) {
