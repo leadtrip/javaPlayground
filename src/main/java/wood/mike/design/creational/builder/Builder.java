@@ -1,4 +1,4 @@
-package wood.mike.design.creational;
+package wood.mike.design.creational.builder;
 
 import java.time.LocalDate;
 import java.util.List;

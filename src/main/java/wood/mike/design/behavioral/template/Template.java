@@ -1,4 +1,4 @@
-package wood.mike.design.behavioral;
+package wood.mike.design.behavioral.template;
 
 /**
  * Break algorithm down into sequence of steps then provide a method that will execute the steps in the required order.
