@@ -1,4 +1,4 @@
-package wood.mike.design.behavioral;
+package wood.mike.design.behavioral.observer;
 
 import java.util.*;
 
