@@ -1,19 +1,19 @@
-package wood.mike.java15.bike;
+package wood.mike.versions.java15.bike;
 
-public final class MountainBike implements Bike {
+public final class RoadBike implements Bike {
 
     @Override
     public String handleBarType() {
-        return "flat";
+        return "drop";
     }
 
     @Override
     public boolean getAero() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean jump() {
-        return true;
+        return false;
     }
 }

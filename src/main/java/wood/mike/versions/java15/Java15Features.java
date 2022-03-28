@@ -1,8 +1,8 @@
-package wood.mike.java15;
+package wood.mike.versions.java15;
 
-import wood.mike.java15.bike.Bike;
-import wood.mike.java15.bike.MountainBike;
-import wood.mike.java15.bike.RoadBike;
+import wood.mike.versions.java15.bike.Bike;
+import wood.mike.versions.java15.bike.MountainBike;
+import wood.mike.versions.java15.bike.RoadBike;
 
 import java.util.ArrayList;
 import java.util.List;

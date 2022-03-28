@@ -1,4 +1,4 @@
-package wood.mike.java15.bike;
+package wood.mike.versions.java15.bike;
 
 /**
  * EBike IS NOT ALLOWED IN THE SEALED HIERARCHY

@@ -1,4 +1,4 @@
-package wood.mike.java8;
+package wood.mike.versions.java8;
 
 import java.lang.reflect.Method;
 import java.time.*;

@@ -1,4 +1,4 @@
-package wood.mike.java17;
+package wood.mike.versions.java17;
 
 import wood.mike.helper.Person;
 

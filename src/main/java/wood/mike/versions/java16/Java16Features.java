@@ -1,4 +1,4 @@
-package wood.mike.java16;
+package wood.mike.versions.java16;
 
 import java.util.Random;
 

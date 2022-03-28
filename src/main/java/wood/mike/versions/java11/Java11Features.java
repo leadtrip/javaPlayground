@@ -1,4 +1,4 @@
-package wood.mike.java11;
+package wood.mike.versions.java11;
 
 import javax.annotation.Nonnull;
 import javax.net.ssl.SSLSocket;
