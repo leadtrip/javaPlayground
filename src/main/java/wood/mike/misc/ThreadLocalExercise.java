@@ -94,7 +94,7 @@ public class ThreadLocalExercise {
 
         // DemoThread stores instances of 2 ThreadLocals
         new Thread(new DemoTask()).start();
-        Thread.sleep(10);
+        Thread.sleep(20);
         new Thread(new DemoTask()).start();
         Thread.sleep(20);
         new Thread(new DemoTask()).start();
