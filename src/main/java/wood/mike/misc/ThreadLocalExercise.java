@@ -96,7 +96,7 @@ public class ThreadLocalExercise {
         new Thread(new DemoTask()).start();
         Thread.sleep(10);
         new Thread(new DemoTask()).start();
-        Thread.sleep(10);
+        Thread.sleep(20);
         new Thread(new DemoTask()).start();
     }
 
