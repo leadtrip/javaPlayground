@@ -111,6 +111,11 @@
             <artifactId>netty-all</artifactId>
             <version>${netty-all.version}</version>
         </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>4.2.3</version>
+        </dependency>
     </dependencies>
 
 </project>
