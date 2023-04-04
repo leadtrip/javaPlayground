@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 import wood.mike.helper.Person;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -20,6 +21,8 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
+ * SEE ALSO ReactorMonoTest and ReactorFluxTest
+ *
  * Reactive programming is an asynchronous programming paradigm concerned with data streams and the propagation of change.
  * This means that it becomes possible to express static (e.g. arrays) or dynamic (e.g. event emitters) data streams with
  * ease via the employed programming language(s)
@@ -27,7 +30,8 @@ import java.util.stream.Stream;
  * Reactive streams are push based.
  *
  * You can think of data processed by a reactive application as moving through an assembly line.
- * Reactor is both the conveyor belt and the workstations. The raw material pours from a source (the original Publisher) and ends up as a finished product ready to be pushed to the consumer (or Subscriber).
+ * Reactor is both the conveyor belt and the workstations.
+ * The raw material pours from a source (the original Publisher) and ends up as a finished product ready to be pushed to the consumer (or Subscriber).
  *
  * The raw material can go through various transformations and other intermediary steps or be part of a larger assembly
  * line that aggregates intermediate pieces together.
@@ -35,10 +39,11 @@ import java.util.stream.Stream;
  * the afflicted workstation can signal upstream to limit the flow of raw material
  *
  * Nothing Happens Until You subscribe()
- * In Reactor, when you write a Publisher chain, data does not start pumping into it by default. Instead, you create an abstract description of your asynchronous process (which can help with reusability and composition).
+ * In Reactor, when you write a Publisher chain, data does not start pumping into it by default.
+ * Instead, you create an abstract description of your asynchronous process (which can help with reusability and composition).
  *
- * By the act of subscribing, you tie the Publisher to a Subscriber, which triggers the flow of data in the whole chain. T
- * his is achieved internally by a single request signal from the Subscriber that is propagated upstream, all the way back to the source Publisher.
+ * By the act of subscribing, you tie the Publisher to a Subscriber, which triggers the flow of data in the whole chain.
+ * This is achieved internally by a single request signal from the Subscriber that is propagated upstream, all the way back to the source Publisher.
  */
 @Slf4j
 public class ProjectReactor {
@@ -47,8 +52,8 @@ public class ProjectReactor {
 
     public static void main(String[] args) throws InterruptedException {
         ProjectReactor rt = new ProjectReactor();
-        rt.publishers();
-/*        rt.fluxCreation();
+/*        rt.publishers();
+        rt.fluxCreation();
         rt.withDelay();
         rt.monoCreation();
 
@@ -57,6 +62,7 @@ public class ProjectReactor {
         rt.publishAndConsume();
         rt.threadTest();
         rt.threadTestStream();*/
+        rt.hotAndColdPublishers();
     }
 
     // Flux and Mono are both Publishers
@@ -243,4 +249,119 @@ public class ProjectReactor {
         while (!done.get()) {}      // pause program till released above
     }
 
+    private Stream<String> getMovie( String movie ){
+        System.out.printf("Got the movie streaming request for %1s%n", movie);
+        return Stream.of(
+                "scene 1",
+                "scene 2",
+                "scene 3",
+                "scene 4",
+                "scene 5"
+        );
+    }
+
+    /**
+     * There are 2 broad families of publishers, hot and cold.
+     * Cold publishers generate data anew for each subscription. If no subscription is created, data never gets generated.
+     * Hot publishers, on the other hand, do not depend on any number of subscribers.
+     * They might start publishing data right away and would continue doing so whenever a new Subscriber comes in
+     * (in which case, the subscriber would see only new elements emitted after it subscribed)
+     */
+    private void hotAndColdPublishers() throws InterruptedException {
+        /*coldPublisher1();
+        hotPublisher1();
+        hotPublisherRefCount();*/
+        hotPublisherJust();
+        coldPublisherDefer();
+    }
+
+    /**
+     * All the data is available to subscribers of a cold publisher no matter when they subscribe.
+     * Each subscriber gets a dedicated publisher.
+     * As seen below, both Dave and Jane watch all the movie.
+     */
+    private void coldPublisher1() throws InterruptedException{
+        Flux<String> netFlux = Flux.fromStream(() -> getMovie("LOTR"))
+                .delayElements(Duration.ofSeconds(1));
+
+        // Dave starts watching the movie
+        netFlux.subscribe(scene -> System.out.println("Dave is watching " + scene));
+
+        Thread.sleep(3000);
+        // Jane starts watching the movie sometime later but while Dave is still watching, the publisher for Jane is independent of Dave's
+        netFlux.subscribe(scene -> System.out.println("Jane is watching " + scene));
+        Thread.sleep(6000);
+    }
+
+    /**
+     * In the case of a hot publisher, data starts to flow when the first subscriber subscribes, and subsequent subscribers
+     * pick up the flow of data from when they subscribe only, potentially missing previous data as in the case below
+     * where the share method is invoked on the Flux.
+     *
+     * The use of share below converts the cold publisher into hot.
+     */
+    private void hotPublisher1() throws InterruptedException {
+        Flux<String> movieTheatre = Flux.fromStream(() -> getMovie("The hills have eyes"))
+                .delayElements(Duration.ofSeconds(1)).share();
+
+        // Dave starts watching the movie
+        movieTheatre.subscribe(scene -> System.out.println("Dave is watching " + scene));
+
+        Thread.sleep(3000);
+        // Jane starts watching the movie sometime later but while Dave is still watching, Jane misses the start of the movie
+        movieTheatre.subscribe(scene -> System.out.println("Jane is watching " + scene));
+        Thread.sleep(6000);
+    }
+
+    /**
+     * This example uses refCount to specify the minimum number of subscribers that should subscribe before connecting to
+     * the upstream source
+     */
+    private void hotPublisherRefCount() throws InterruptedException{
+        Flux<String> movieTheatre = Flux.fromStream(() -> getMovie("Bambi"))
+                .delayElements(Duration.ofSeconds(1)).publish().refCount(2);
+
+        // Dave starts watching the movie & nothing happens because we need 2 x subscribers
+        movieTheatre.subscribe(scene -> System.out.println("Dave is watching " + scene));
+
+        Thread.sleep(1000);
+        // Jane starts watching the movie sometime later, now we have 2 x subscribers & the publisher can publish
+        movieTheatre.subscribe(scene -> System.out.println("Jane is watching " + scene));
+        Thread.sleep(6000);
+    }
+
+    private Mono<String> sampleMsg(String str) {
+        System.out.printf("Call to Retrieve Sample Message!! --> %s at: %s%n", str, LocalDateTime.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)));
+        return Mono.just(str);
+    }
+
+    private void hotPublisherJust() throws InterruptedException {
+        System.out.println("Starting...");
+
+        // just captures the value at assembly time and replays to subscribers later, no subscribers are required
+        Mono<String> justMono = sampleMsg("Lamenting");
+
+        Thread.sleep(1000);
+
+        justMono.subscribe(System.out::println);
+
+        Thread.sleep(1000);
+
+        justMono.subscribe(System.out::println);
+    }
+
+    private void coldPublisherDefer() throws InterruptedException {
+        System.out.println("Starting...");
+
+        // the use of defer converts publisher to cold and each subscriber results in call to publisher
+        Mono<String> justMono = Mono.defer( () -> sampleMsg("Anarchic") );
+
+        Thread.sleep(1000);
+
+        justMono.subscribe(System.out::println);
+
+        Thread.sleep(1000);
+
+        justMono.subscribe(System.out::println);
+    }
 }
