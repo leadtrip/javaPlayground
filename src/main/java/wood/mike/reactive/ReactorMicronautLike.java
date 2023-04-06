@@ -8,6 +8,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * A mock up of a micronaut like environment where a DTO is received by the API and is converted to an entity for
+ * something to happen to it.
+ * In particular, we're focussing on fetching relations in a reactive manner to build the entity, this was done
+ * because hibernate reactive does not work like non-reactive hibernate with regard to @ManyToMany relationship handling
+ * making it pretty pointless really as that's the whole point of using hibernate.
+ */
 public class ReactorMicronautLike {
 
     public static void main(String[] args) {
@@ -15,7 +22,8 @@ public class ReactorMicronautLike {
     }
 
     public ReactorMicronautLike() {
-        buildDbEntityFromDto();
+        buildDbEntityFromDtoVersion1();
+        buildDbEntityFromDtoVersion2();
     }
 
     /**
@@ -32,13 +40,33 @@ public class ReactorMicronautLike {
      *     ]
      * }
      */
-    private void buildDbEntityFromDto() {
-        BookDto bookDto = new BookDto(1L, "The shining", Set.of(new GenreDto(1L ), new GenreDto(2L )));
+    private void buildDbEntityFromDtoVersion1() {
+        BookDto bookDto = basicBookDto();
 
         transformDtoToEntity(bookDto)
                 .flatMap(bookEntity -> setGenres(bookEntity, bookDto))
                 .log()
                 .block();
+    }
+
+    private void buildDbEntityFromDtoVersion2() {
+        BookDto bookDto = basicBookDto();
+
+        entitiesFromDtoIds(bookDto.genres())
+                .map(genreEntities -> {
+                    return new BookEntity(bookDto.id(), bookDto.name(), Set.copyOf(genreEntities));
+                })
+                .log()
+                .block();
+    }
+
+    private BookDto basicBookDto() {
+        return new BookDto(1L, "The shining", Set.of(new GenreDto(1L ), new GenreDto(2L )));
+    }
+
+    private Flux<GenreEntity> genreEntitiesFromDto( Set<GenreDto> genreDtos ) {
+        return allRepositoryGenres()
+                .filter(genreEntity -> genreDtos.stream().map(GenreDto::id).collect(Collectors.toSet()).contains(genreEntity.getId()));
     }
 
     private Mono<BookEntity> transformDtoToEntity( BookDto bookDto ) {
