@@ -1,4 +1,4 @@
-package wood.mike.reactive;
+package wood.mike.reactive.micronautlike;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package wood.mike.reactive;
+package wood.mike.reactive.micronautlike;
 
 
 import reactor.core.publisher.Flux;

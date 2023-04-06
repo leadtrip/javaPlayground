@@ -1,4 +1,4 @@
-package wood.mike.reactive;
+package wood.mike.reactive.micronautlike;
 
 public record GenreDto (
     Long id,

@@ -1,4 +1,4 @@
-package wood.mike.reactive;
+package wood.mike.reactive.micronautlike;
 
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
