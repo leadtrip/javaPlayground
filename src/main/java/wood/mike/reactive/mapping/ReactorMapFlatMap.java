@@ -5,13 +5,13 @@ import reactor.core.publisher.Mono;
 /**
  * map just returns a value whereas flatmap returns another Mono or Flux
  */
-public class ProjectReactorMapFlatMap {
+public class ReactorMapFlatMap {
 
     public static void main(String[] args) {
-        new ProjectReactorMapFlatMap();
+        new ReactorMapFlatMap();
     }
 
-    public ProjectReactorMapFlatMap() {
+    public ReactorMapFlatMap() {
         var person = new PersonDto(null, "Mike");
         logPerson(person);
         person = create(person).block();
