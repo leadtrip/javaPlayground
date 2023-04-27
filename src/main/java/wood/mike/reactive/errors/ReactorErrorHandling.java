@@ -30,6 +30,7 @@ public class ReactorErrorHandling {
         fallbackMethod();
         catchAndRethrow().doOnError(throwable -> System.out.println("Oh dear - " + throwable.getMessage())).onErrorComplete().blockLast();
         logOrReactToErrorThenPropagate().onErrorComplete().blockLast();
+        doFinally();
     }
 
     private void catchAndReturnDefaultValue() {
@@ -141,11 +142,11 @@ public class ReactorErrorHandling {
 
     static class Stats {
         void startTimer() {
-
+            System.out.println("Timer started");
         }
 
         void stopTimerAndRecordTiming() {
-
+            System.out.println("Timer stopped");
         }
     }
 }
