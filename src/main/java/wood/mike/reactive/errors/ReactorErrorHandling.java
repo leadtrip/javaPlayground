@@ -1,6 +1,10 @@
 package wood.mike.reactive.errors;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.SignalType;
+
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.LongAdder;
 
 /**
  * 4.6.1. Error Handling Operators
@@ -24,7 +28,8 @@ public class ReactorErrorHandling {
         catchAndReturnDefaultValueWithPredicate();
         catchAndSwallow();
         fallbackMethod();
-        catchAndRethrow();
+        catchAndRethrow().doOnError(throwable -> System.out.println("Oh dear - " + throwable.getMessage())).onErrorComplete().blockLast();
+        logOrReactToErrorThenPropagate().onErrorComplete().blockLast();
     }
 
     private void catchAndReturnDefaultValue() {
@@ -81,7 +86,7 @@ public class ReactorErrorHandling {
 
     private Flux<String> callExternalService(String key) {
         if (key.equals("key2")) {
-            return Flux.error(new RuntimeException());
+            return Flux.error(new RuntimeException("Unsupported key"));
         }
         return Flux.just(String.format("External service value for %s", key));
     }
@@ -90,16 +95,57 @@ public class ReactorErrorHandling {
         return Flux.just(String.format("Cached value for %s", key));
     }
 
-    private void catchAndRethrow(){
-        Flux.just("key1", "key2")
+    /**
+     * Catch the exception, wrap it, then rethrow
+     */
+    private Flux<String> catchAndRethrow(){
+        return Flux.just("key1", "key2")
                 .flatMap(this::callExternalService)
-                .onErrorMap(original -> new MyException("oops, SLA exceeded", original))
-                .blockLast();
+                .onErrorMap(original -> new MyException("SLA exceeded", original));
     }
 
-    class MyException extends Exception {
+    static class MyException extends Exception {
         public MyException(String s, Throwable original) {
-            System.out.println(s + " " + original.getMessage());
+            super(s + " (" + original.getMessage() + ")", original);
+        }
+    }
+
+    /**
+     * Catch the error, log it then propagate it
+     */
+    private Flux<String> logOrReactToErrorThenPropagate() {
+        AtomicInteger failureTally = new AtomicInteger();
+
+        return Flux.just("key1", "key2")
+            .flatMap(this::callExternalService)
+            .doOnError( e -> {
+                System.out.printf("Total of %s errors today%n", failureTally.incrementAndGet());
+            });
+    }
+
+
+    private void doFinally() {
+        Stats stats = new Stats();
+        LongAdder statsCancel = new LongAdder();
+
+        Flux.just("foo", "bar")
+            .doOnSubscribe(s -> stats.startTimer())
+            .doFinally(type -> {
+                stats.stopTimerAndRecordTiming();
+                if (type == SignalType.CANCEL)
+                    statsCancel.increment();
+            })
+            .take(1)
+            .blockLast();
+    }
+
+    static class Stats {
+        void startTimer() {
+
+        }
+
+        void stopTimerAndRecordTiming() {
+
         }
     }
 }
