@@ -3,7 +3,7 @@ package wood.mike.reactive.doOn;
 import reactor.core.publisher.Flux;
 
 /**
- * The doOnXXXX methods are considered side effects that don't have any effect on the elements
+ * The doOnXXXX and doFinally methods are considered side effects that don't have any effect on the elements
  */
 public class ReactorDoOn {
 
@@ -15,7 +15,7 @@ public class ReactorDoOn {
         doOnSubscribe();
         doOnNextAndComplete();
         doOnError();
-        doOnFinally();
+        doFinally();
     }
 
     private void doOnSubscribe() {
@@ -24,6 +24,12 @@ public class ReactorDoOn {
                 .subscribe();
     }
 
+    private void doOnNextAndComplete() {
+        Flux.just("One", "Two")
+                .doOnNext( s -> System.out.println("Next is " + s))
+                .doOnComplete(() -> System.out.println("Complete"))
+                .blockLast();
+    }
 
     private void doOnError() {
         Flux.just("Fine", "Okay", "throwException")
@@ -35,21 +41,14 @@ public class ReactorDoOn {
                 .blockLast();
     }
 
-    private void doOnNextAndComplete() {
-        Flux.just("One", "Two")
-                .doOnNext( s -> System.out.println("Next is " + s))
-                .doOnComplete(() -> System.out.println("Complete"))
-                .blockLast();
-    }
-
-    private void doOnFinally() {
+    private void doFinally() {
         Flux.just("Orange", "Brown")
-                .doFinally(signalType -> System.out.println("Signal " + signalType))
+                .doFinally(signalType -> System.out.println("Signal " + signalType))    // this completes without error so signalType is onComplete
                 .subscribe();
 
         Flux.just("Fine", "Okay", "throwException")
                 .map(this::badService)
-                .doFinally(signalType -> System.out.println("Signal " + signalType))
+                .doFinally(signalType -> System.out.println("Signal " + signalType))    // this completes with error so signalType is onError
                 .onErrorComplete()
                 .subscribe();
     }
