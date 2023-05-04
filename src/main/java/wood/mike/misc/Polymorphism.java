@@ -54,13 +54,13 @@ interface Exercise {
 
     private String description( final Integer rpe ) {
         return switch ( rpe ) {
-            case Integer r && r < 2 -> "Very easy";
             case 2 -> "Easy";
             case 3 -> "Moderate";
             case 4 -> "Somewhat hard";
             case 5 -> "Hard";
-            case Integer r && r < 8 -> "Very hard";
-            case Integer r && r < 11 -> "Maximum exertion";
+            case Integer r when r < 2 -> "Very easy";
+            case Integer r when r < 8 -> "Very hard";
+            case Integer r when r < 11 -> "Maximum exertion";
             default -> "Mind blowing";
         };
     }

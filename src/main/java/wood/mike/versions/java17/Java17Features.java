@@ -20,7 +20,8 @@ public class Java17Features {
         patternMatchDominance(new ArrayIndexOutOfBoundsException());
         List.of(new Fenix6(), new Pace2()).forEach(Java17Features::patternMatchingCompleteness);
 
-        guardedPatterns(new Person.PersonBuilder("Brian", "Cox" ).dob( "1973-02-13" ).build());
+        // REMOVED IN JAVA 19
+        //guardedPatterns(new Person.PersonBuilder("Brian", "Cox" ).dob( "1973-02-13" ).build());
     }
 
     /**
@@ -54,15 +55,17 @@ public class Java17Features {
     }
 
     /**
+     * REMOVED IN JAVA 19
+     *
      * Conditional logic is added to the case label aka guarded pattern of form p && e (pattern && expression)
      */
-    private static void guardedPatterns( Person person ) {
+/*    private static void guardedPatterns( Person person ) {
         switch (person) {
             case Person p && p.getAge() < 18 -> System.out.println("Child");
             case Person p && p.getAge() >= 65 -> System.out.println("Pensioner");
             case Person ignored -> System.out.println( "Standard" );
         }
-    }
+    }*/
 
     /**
      * If the type of the selector expression is a sealed class,
