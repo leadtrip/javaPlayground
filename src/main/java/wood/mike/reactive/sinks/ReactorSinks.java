@@ -19,6 +19,7 @@ public class ReactorSinks {
 
     private void runAll() {
         manyMulticast();
+        manyUnicast();
         manyReplayAll();
         manyReplayLatest();
         one();
@@ -43,7 +44,7 @@ public class ReactorSinks {
     }
 
     /**
-     * New subscribers only get elements emitted after they subscribe
+     * many().multicast(): a sink that will transmit only newly pushed data to its subscribers
      */
     private void manyMulticast() {
         Sinks.Many<String> hotSource = Sinks.unsafe().many().multicast().directBestEffort();
@@ -56,6 +57,24 @@ public class ReactorSinks {
 
         hotFlux.subscribe(d -> System.out.printf("Sinks many multicast subscriber 2 got %s%n", d));
 
+        hotSource.emitNext("orange", FAIL_FAST);
+        hotSource.emitNext("purple", FAIL_FAST);
+        hotSource.emitComplete(FAIL_FAST);
+
+        System.out.println();
+    }
+
+    /**
+     * many().unicast(): same as multicast above, with the twist that data pushed before the first subscriber registers is buffered
+     */
+    private void manyUnicast() {
+        Sinks.Many<String> hotSource = Sinks.unsafe().many().unicast().onBackpressureError();
+        Flux<String> hotFlux = hotSource.asFlux().map(String::toUpperCase);
+
+        hotFlux.subscribe(d -> System.out.printf("Sinks many multicast subscriber 1 got %s%n", d));
+
+        hotSource.emitNext("blue", FAIL_FAST );
+        hotSource.emitNext("green", FAIL_FAST );
         hotSource.emitNext("orange", FAIL_FAST);
         hotSource.emitNext("purple", FAIL_FAST);
         hotSource.emitComplete(FAIL_FAST);
