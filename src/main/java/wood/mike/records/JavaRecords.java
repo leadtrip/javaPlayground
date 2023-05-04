@@ -1,5 +1,8 @@
 package wood.mike.records;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.UUID;
 
 public class JavaRecords {
@@ -9,10 +12,43 @@ public class JavaRecords {
 
     private void runAll() {
         implementInterfaceNaming();
+        createRecords();
     }
 
     private void implementInterfaceNaming() {
         new DefinitionDto(UUID.randomUUID(), "Bob", "Active");
+    }
+
+    private void createRecords() {
+        new Human("Jon", LocalDate.now());
+
+        new Pet("Alf", LocalDate.now());
+        new Pet("Bernie");
+        System.out.println(Pet.getUnknownDobPetCount());
+
+        Item.Price p = new Item.Price(0, 100);
+        Item.Description d = new Item().new Description("ABC");
+    }
+
+    /**
+     * Class with inner record and class
+     */
+    public class Item {
+        record Price(int min, int max) {}
+        class Description { Description(String d) {}}
+    }
+
+    record Human(String name, LocalDate dob) {}
+    record Pet(String name, LocalDate dob) {
+        static int unknownDobPetCount;    // can have static fields
+        public Pet(String name) {
+            this(name, LocalDate.of(2020, Month.JANUARY, 1));
+            unknownDobPetCount++;
+        }
+
+        public static int getUnknownDobPetCount() {
+            return unknownDobPetCount;
+        }
     }
 
     /**
