@@ -248,6 +248,16 @@ public class Java8DateAndTime {
         System.out.println( twoHoursFromNow.atZone( ZoneId.of("Africa/Nairobi") ) );
     }
 
+    public void moreInstant() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+
+        Instant instant = Instant.now();
+
+        System.out.printf("Default zone %s%n", formatter.withZone(ZoneId.systemDefault()).format(instant));
+        System.out.printf("Australia Perth zone %s%n", formatter.withZone(ZoneId.of("Australia/Perth")).format(instant));
+        System.out.printf("USA NY zone %s%n", formatter.withZone(ZoneId.of("America/New_York")).format(instant));
+    }
+
     public void dayOfWeek() {
         DayOfWeek dayOfWeek = DayOfWeek.of(3);
         System.out.println( dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()));
