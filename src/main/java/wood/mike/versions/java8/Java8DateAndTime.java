@@ -258,4 +258,12 @@ public class Java8DateAndTime {
         DayOfWeek thirtyJan2005 = DayOfWeek.from(LocalDate.of(2005, 1, 30));
         System.out.printf("Thirty Jan 2005 was a %s%n", thirtyJan2005.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.ENGLISH));
     }
+
+    public void formatting() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy h:m:s a");
+
+        System.out.println( formatter.format(LocalDateTime.now()) );
+
+        System.out.println( LocalDateTime.parse( "04/08/2022 7:59:0 am", formatter) );
+    }
 }
