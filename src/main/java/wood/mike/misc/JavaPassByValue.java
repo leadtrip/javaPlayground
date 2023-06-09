@@ -16,7 +16,7 @@ public class JavaPassByValue {
         System.out.printf("%s%n", item.sku);     // sku is still A1
 
         updateSku(item);
-        System.out.printf("%s%n", item.sku);     // sku is still C3
+        System.out.printf("%s%n", item.sku);     // sku is now C3
     }
 
     /**
