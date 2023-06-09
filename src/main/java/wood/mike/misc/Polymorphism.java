@@ -3,19 +3,28 @@ package wood.mike.misc;
 import java.util.List;
 
 /**
- * Compile time polymorphism aka static polymorphism is achieved in Java through method overloading, same method name with different arguments
- * Methods rpe and rpeDescription are overloaded in Exercise
- *
- * Runtime polymorphism aka dynamic binding/dynamic method dispatch is achieved in Java with method overriding, where a subclass implements a parent class method
- * perform and difficulty are overridden in subclasses of Exercise
+ * Compile time polymorphism aka static polymorphism is achieved in Java through method overloading, same method name with different arguments.
+ * Methods rpe and rpeDescription are overloaded in Exercise.
+ * <p>
+ * Runtime polymorphism aka dynamic binding/dynamic method dispatch is achieved in Java with method overriding, where a subclass implements a parent class method.
+ * Methods perform and difficulty are overridden in subclasses of Exercise.
  *
  */
 public class Polymorphism {
+
     public static void main(String[] args) {
-        List.of(new Deadlift(), new Squat(), new Crunch(), new BenchPress(), new DubellCurl()).forEach(
+        List.of(
+                new Deadlift(),
+                new Squat(),
+                new Crunch(),
+                new BenchPress(),
+                new DubellCurl(),
+                ()-> 12 /* an unnamed REALLY hard exercise */
+            )
+            .forEach(
                 exercise -> {
                     var reps = 12;
-                    exercise.perform();
+                    System.out.println( exercise.perform() );
                     System.out.println( exercise.rpeDescription( reps ));
                     System.out.println( exercise.rpe( reps ) );
                     System.out.println("--------");
@@ -35,6 +44,7 @@ public class Polymorphism {
     }
 }
 
+@FunctionalInterface
 interface Exercise {
     Integer MAX_RPE = 10;
 
@@ -104,6 +114,10 @@ class Deadlift implements Exercise {
 }
 
 class Squat implements Exercise {
+    @Override
+    public String perform() {
+        return  "Squatting";
+    }
     @Override
     public Integer difficulty() {
         return 8;
