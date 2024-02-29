@@ -14,22 +14,22 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.9.0</version>
                 <configuration>
-                    <source>20</source>
-                    <target>20</target>
+                    <source>21</source>
+                    <target>21</target>
                     <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
         </plugins>
     </build>
     <properties>
-        <maven.compiler.source>20</maven.compiler.source>
-        <maven.compiler.target>20</maven.compiler.target>
+<!--        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>-->
         <reactor-core.version>3.5.5</reactor-core.version>
-        <guava.version>31.1-jre</guava.version>
+        <guava.version>33.0.0-jre</guava.version>
         <gson.version>2.9.0</gson.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
-        <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
-        <lombok.version>1.18.22</lombok.version>
+        <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
+        <lombok.version>1.18.30</lombok.version>
         <slf4j-api.version>1.7.36</slf4j-api.version>
         <junit-jupiter-engine.version>5.8.2</junit-jupiter-engine.version>
         <junit-platform-launcher.version>1.8.2</junit-platform-launcher.version>
