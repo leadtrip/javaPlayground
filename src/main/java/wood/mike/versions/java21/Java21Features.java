@@ -10,6 +10,7 @@ public class Java21Features {
         java21Features.sequencedCollections();
         java21Features.recordPatterns();
         java21Features.switchPatternMatching(new Mouse("Slash", 62));
+        java21Features.stringTemplates();
     }
 
     /**
@@ -54,7 +55,18 @@ public class Java21Features {
         switch (o) {
             case Mouse(String n, int a) -> System.out.printf("o is a Mouse: %s %d%n", n, a);
             case String s               -> System.out.printf("o is a String: %s%n", s);
-            default                     -> System.out.printf("o is something else %s%n");
+            default                     -> System.out.printf("o is something else %s%n", o);
         }
+    }
+
+    /**
+     * STR template processor is available in every class
+     */
+    private void stringTemplates() {
+        String name = "Wesley";
+
+        String message = STR."Hello \{name}";
+
+        System.out.println(message);
     }
 }
