@@ -41,8 +41,7 @@ public class Java21Features {
 
         // old way of destructuring
         if (mark instanceof Mouse m) {
-            String n = m.name();
-            int a = m.age();
+            System.out.println("Mouse name " + m.name + " age " + m.age);
         }
 
         // new way

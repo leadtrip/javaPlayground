@@ -1,16 +1,34 @@
 package wood.mike.anything;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Anything {
     public static void main(String[] args) {
-        Map<String, String> myMap = new LinkedHashMap<>();
-        myMap.put("one",  "one.two");
-        myMap.put("two",  "one.two");
-        myMap.put("three",  "three");
-        myMap.put("four",  "four.five");
+        FilterCategory filterCategory = new FilterCategory();
+        filterCategory.tags.add(new Tag("zz_auto_213"));
+        filterCategory.tags.add(new Tag("zz_b"));
+        filterCategory.tags.add(new Tag("zz_a"));
 
-        myMap.values().stream().filter(ent->ent.contains(".")).distinct().forEach(System.out::println);
+        List<String> tags = filterCategory.toList();
+
+        var res = tags.isEmpty() ? "" : tags
+                .stream()
+                .sorted()
+                .filter(tag -> !tag.startsWith("zz_auto_"))
+                .findFirst()
+                .orElse(tags.getFirst());
+
+        System.out.println(res);
+    }
+}
+
+record Tag(String name){}
+
+
+class FilterCategory {
+    List<Tag> tags = new ArrayList<>();
+
+    public List<String> toList() {
+        return tags.stream().map(Tag::name).toList();
     }
 }
