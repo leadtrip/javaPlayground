@@ -8,8 +8,8 @@ import javax.crypto.SecretKey;
 
 public class JwtParser {
     public static void main(String[] args) {
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ0YiIsImlzU3RhZmZNZW1iZXIiOnRydWUsImhhc0NyZWRpdHMiOmZhbHNlLCJpc3MiOiJzZSIsInVzZXJJZCI6ODMzMjYxNDgsImVtYWlsIjoibWlrZS53b29kQHNlY3JldGVzY2FwZXMuY29tIn0.R4zFTAHSciNlkF-KmHccRHLBeFOMPO9OZ9X8ycwwXxo";
-        String secret = "SK2hTuImZpk1Qam5uOymtyAHQf9hcUGi";
+        String token = "";
+        String secret = "";
 
         SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
 
