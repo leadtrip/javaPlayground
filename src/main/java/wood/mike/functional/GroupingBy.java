@@ -27,6 +27,7 @@ public class GroupingBy {
     public static void main(String[] args) {
         GroupingBy groupingBy = new GroupingBy();
         groupingBy.listPhonesByMfr();
+        groupingBy.setOfPhonesByMfr();
         groupingBy.listPhoneModelsByMfr();
         groupingBy.countPhonesByMfr();
         groupingBy.listPhonesByMfrAndChargePort();
@@ -34,6 +35,9 @@ public class GroupingBy {
         groupingBy.enumMap();
     }
 
+    /**
+     * Grouping by one attribute (Manufacturer name) and returning map of manufacturer name(String) -> List<Phone>
+     */
     private void listPhonesByMfr() {
         Map<String, List<Phone>> phonesByMfr = Arrays.stream(phones).collect(Collectors.groupingBy(
                 phone -> phone.manufacturer().name()
@@ -42,6 +46,21 @@ public class GroupingBy {
       phonesByMfr.forEach((k, v) -> log.info("{} {}", k, v));
     }
 
+    /**
+     * Similar to above, grouping by one attribute (Charge port) but returning results/matches in a set ChargePort -> Set<Phone>
+     */
+    private void setOfPhonesByMfr() {
+        Map<ChargePort, Set<Phone>> phonesByChargePort =
+                Arrays.stream(phones).collect(Collectors.groupingBy(
+                        Phone::chargePort, HashMap::new, Collectors.toSet()
+                ));
+
+        phonesByChargePort.forEach((k, v) -> log.info("{} {}", k, v));
+    }
+
+    /**
+     * Grouping by one attribute (Manufacturer name) and returning a map of manufacturer name(String) -> phone model(String)
+     */
     private void listPhoneModelsByMfr() {
         Map<String, List<String>> phoneModelsByMfr =
                 Arrays.stream(phones).collect(
@@ -57,7 +76,7 @@ public class GroupingBy {
     }
 
     /**
-     * Perform a secondary grouping for multiple groupings, manufacturer and charge port
+     * Grouping by 2 attributes, Manufacturer and charge port name, returns a Map<String, Map<String, List<Phone>>>
      */
     private void listPhonesByMfrAndChargePort() {
         Map<String, Map<String, List<Phone>>> phonesByMfrAndChargePort = Arrays.stream(phones)
@@ -74,6 +93,9 @@ public class GroupingBy {
         }
     }
 
+    /**
+     * Group by one attribute (Manufacturer name) and count results
+     */
     private void countPhonesByMfr() {
         Map<String, Long> phoneCountsByMfr = Arrays.stream(phones).collect(Collectors.groupingBy(
                 phone -> phone.manufacturer().name(),
@@ -83,6 +105,9 @@ public class GroupingBy {
         phoneCountsByMfr.forEach((k, v) -> log.info("{} {}", k, v));
     }
 
+    /**
+     * Group by one attribute (Manufacturer) and convert to an object shaped for the results, clunky!
+     */
     private void countPhonesByMfrReturningRecord() {
         Map<Manufacturer, PhoneMfrTotal> phoneMfrTotalsMap = Arrays.stream(phones)
                 .collect(Collectors.groupingBy(
@@ -102,6 +127,9 @@ public class GroupingBy {
         log.info("{}", phoneMfrTotalsList);
     }
 
+    /**
+     * Grouping by one attribute (Manufacturer) and returning an EnumMap
+     */
     private void enumMap() {
         EnumMap<Manufacturer, List<Phone>> phonesByEnumMfr =
                 Arrays.stream(phones)
