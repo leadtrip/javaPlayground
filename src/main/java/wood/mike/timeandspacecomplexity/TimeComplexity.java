@@ -104,7 +104,24 @@ public class TimeComplexity {
         // Nested loop — O(n²)
         for (int i = 0; i < nums.length; i++) {
             for (int j = 0; j < nums.length; j++) {
-                System.out.println("(" + nums[i] + ", " + nums[j] + ")");
+                System.out.println(STR."(\{nums[i]}, \{nums[j]})");
+            }
+        }
+
+        int[][] matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        for (int[] matrixRow : matrix) {
+            for (int i = 0; i < matrixRow.length; i++) {
+                System.out.print(matrixRow[i]);
+            }
+            System.out.println();
+        }
+
+        int[] nums2 = {1, 2, 3};
+        for (int i = 0; i < nums2.length; i++) {
+            for (int j = 0; j < nums2.length; j++) {
+                for (int k = 0; k < nums2.length; k++) {
+                    System.out.println(STR."(outer \{i}, middle \{j}, inner \{k})");
+                }
             }
         }
     }
@@ -128,14 +145,9 @@ public class TimeComplexity {
     public boolean binarySearch(int[] sortedArr, int target) {
         int left = 0;
         int right = sortedArr.length - 1;
-        int attempts = 0;
 
         while (left <= right) {
-            attempts++;
-            System.out.println(STR."Binary search attempt: \{attempts}");
             int mid = left + (right - left) / 2;
-            System.out.println(STR."Binary search range: \{left}, \{right}, \{mid}");
-
             if (sortedArr[mid] == target) {
                 return true;
             } else if (sortedArr[mid] < target) {
