@@ -6,6 +6,7 @@ import wood.mike.helper.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -119,6 +120,14 @@ public class CollectorsAll {
                 .collect(Collectors.summingInt(Integer::intValue));
     }
 
+    public Double summingDouble() {
+        return Stream.of(sales)
+                .map(sale -> sale.price())
+                .collect(
+                        Collectors.summingDouble(Double::doubleValue)
+                );
+    }
+
     public Double averagingInt() {
         return Stream.of(1,2,3,4,5,6)
                 .collect(Collectors.averagingInt(Integer::intValue));
@@ -200,6 +209,79 @@ public class CollectorsAll {
                                 Phone::manufacturer,
                                 ConcurrentSkipListMap::new,
                                 Collectors.mapping(Phone::chargePort, Collectors.toList())
+                        )
+                );
+    }
+
+    public Map<Boolean, List<Phone>> partitioningBy() {
+        return Stream.of(phones)
+                .collect(
+                        Collectors.partitioningBy(
+                                phone -> phone.manufacturer().equals(Manufacturer.SAMSUNG)
+                        )
+                );
+    }
+
+    public Map<Boolean, Set<Phone>> partitioningBy2() {
+        return Stream.of(phones)
+                .collect(
+                        Collectors.partitioningBy(
+                                phone -> phone.manufacturer().equals(Manufacturer.SAMSUNG),
+                                Collectors.toSet()
+                        )
+                );
+    }
+
+    public Map<String, Manufacturer> toMap() {
+        return Stream.of(phones)
+                .collect(
+                        Collectors.toMap(
+                                Phone::model,
+                                Phone::manufacturer
+                        )
+                );
+    }
+
+    public Map<Manufacturer, Phone> toMap2() {
+        return Stream.of(phones)
+                .collect(
+                        Collectors.toMap(
+                                Phone::manufacturer,
+                                Function.identity(),
+                                (existing, _) -> existing
+                        )
+                );
+    }
+
+    public Map<Manufacturer, Phone> toMap3() {
+        return Stream.of(phones)
+                .collect(
+                        Collectors.toMap(
+                                Phone::manufacturer,
+                                Function.identity(),
+                                (_, replacement) -> replacement,
+                                ConcurrentSkipListMap::new
+                        )
+                );
+    }
+
+    public DoubleSummaryStatistics summarizingDouble() {
+        return Stream.of(sales)
+                .collect(
+                        Collectors.summarizingDouble(
+                                (Sale::price)
+                        )
+                );
+    }
+
+    public String teeing() {
+        return Stream.of(sales)
+                .map(Sale::price)
+                .collect(
+                        Collectors.teeing(
+                                Collectors.averagingDouble(Double::doubleValue),
+                                Collectors.summingDouble(Double::doubleValue),
+                                (average, sum) -> String.format("Average: %.2f, Sum: %.2f", average, sum)
                         )
                 );
     }

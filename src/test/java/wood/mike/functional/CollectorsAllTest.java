@@ -10,8 +10,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CollectorsAllTest {
 
@@ -103,6 +102,12 @@ public class CollectorsAllTest {
     }
 
     @Test
+    void testSummingDouble() {
+        Double v = collectorsAll.summingDouble();
+        assertEquals(3996.98, v);
+    }
+
+    @Test
     void testAveragingInt() {
         Double d =  collectorsAll.averagingInt();
         assertEquals(3.5, d);
@@ -160,5 +165,54 @@ public class CollectorsAllTest {
     void testGroupingByConcurrent3() {
         ConcurrentSkipListMap<Manufacturer, List<ChargePort>> manufacturerListTreeMap = collectorsAll.groupingByConcurrent3();
         assertEquals(2, manufacturerListTreeMap.get(Manufacturer.APPLE).size());
+    }
+
+    @Test
+    void testPartitioningBy() {
+        Map<Boolean, List<Phone>> booleanListMap = collectorsAll.partitioningBy();
+        assertEquals(3, booleanListMap.get(true).size());
+        assertEquals(4, booleanListMap.get(false).size());
+    }
+
+    @Test
+    void testPartitioningBy2() {
+        Map<Boolean, Set<Phone>> booleanListMap = collectorsAll.partitioningBy2();
+        assertEquals(3, booleanListMap.get(true).size());
+        assertEquals(4, booleanListMap.get(false).size());
+    }
+
+    @Test
+    void testToMap() {
+        Map<String, Manufacturer> map = collectorsAll.toMap();
+        assertEquals(Manufacturer.SAMSUNG, map.get("Galaxy S1"));
+        assertEquals(Manufacturer.APPLE, map.get("iPhone 1"));
+    }
+
+    @Test
+    void testToMap2() {
+        Map<Manufacturer, Phone> map = collectorsAll.toMap2();
+        assertEquals(map.get(Manufacturer.APPLE), collectorsAll.allPhones().get(0));
+    }
+
+    @Test
+    void testToMap3() {
+        Map<Manufacturer, Phone> map = collectorsAll.toMap3();
+        assertEquals(map.get(Manufacturer.APPLE), collectorsAll.allPhones().get(1));
+    }
+
+    @Test
+    void testSummarizingDouble() {
+        DoubleSummaryStatistics doubleSummaryStatistics = collectorsAll.summarizingDouble();
+        assertEquals(3996.98, doubleSummaryStatistics.getSum());
+        assertEquals(799.00, doubleSummaryStatistics.getMax());
+        assertEquals(199.00, doubleSummaryStatistics.getMin());
+        assertEquals(400.00, Math.round(doubleSummaryStatistics.getAverage()));
+        assertEquals(10,  doubleSummaryStatistics.getCount());
+    }
+
+    @Test
+    void testTeeing() {
+        String s = collectorsAll.teeing();
+        assertEquals("Average: 399.70, Sum: 3996.98", s);
     }
 }
