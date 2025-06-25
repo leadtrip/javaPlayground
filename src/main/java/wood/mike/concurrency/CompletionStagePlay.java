@@ -22,11 +22,38 @@ public class CompletionStagePlay {
     public static void main(String[] args) throws InterruptedException {
         CompletionStagePlay play = new CompletionStagePlay();
         play.goSingleFuture();
-        play.goMultipleFutures();
+        play.goMultipleFuturesThenCombineAsync();
+        play.goMultipleFuturesAllOfAsync();
         Thread.sleep(6000);
     }
 
-    private void goMultipleFutures() {
+    private void goMultipleFuturesAllOfAsync() {
+        int seed = 3;
+        Random random = new Random();
+
+        CompletableFuture<User> userFuture = CompletableFuture
+                .supplyAsync(() -> users.get(seed));
+
+        CompletableFuture<UUID> uuidFuture = CompletableFuture.supplyAsync(UUID::randomUUID);
+
+        CompletableFuture<String> stringFuture = CompletableFuture.supplyAsync(() -> "Hello");
+
+        CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(userFuture, uuidFuture, stringFuture);
+
+        combinedFuture.thenRunAsync(() -> {
+            User user = userFuture.join();
+            UUID uuid = uuidFuture.join();
+            String message = stringFuture.join();
+
+            System.out.println(STR."\{message} \{user.username}, your token is: \{uuid}");
+        })
+        .exceptionally(ex -> {
+            System.out.println(STR."Exception: \{ex.getMessage()}");
+            return null;
+        });
+    }
+
+    private void goMultipleFuturesThenCombineAsync() {
         int seed = 3;
         Random random = new Random();
 
@@ -75,7 +102,7 @@ public class CompletionStagePlay {
         CompletableFuture
             .supplyAsync(this::getRandomUserId)
             .thenCompose(this::getUser)
-            .thenApply( user -> user.created)
+            .thenApply(User::createdMedium)
                 .exceptionally(ex -> {
                     System.out.println(STR."Error fetching user \{ex.getMessage()}");
                     return null;
@@ -87,7 +114,7 @@ public class CompletionStagePlay {
                         System.out.println("Success");
                     }
                 })
-                .thenAccept(created -> System.out.println(STR."User created at \{created}"));
+                .thenAccept(created -> System.out.println(STR."User created at: \{created}"));
     }
 
     private Integer getRandomUserId() {
@@ -101,7 +128,11 @@ public class CompletionStagePlay {
     record User(Integer id, String username, ZonedDateTime created) {
         @Override
         public String toString() {
-            return STR."User{id=\{id}, username='\{username}', created=\{created.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM))}}";
+            return STR."User{id=\{id}, username='\{username}', created=\{createdMedium()}}";
+        }
+
+        public String createdMedium() {
+            return created.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM));
         }
     }
 
