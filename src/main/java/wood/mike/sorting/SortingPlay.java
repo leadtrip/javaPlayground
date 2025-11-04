@@ -9,6 +9,7 @@ public class SortingPlay {
     public static void main(String[] args) {
         SortingPlay play = new SortingPlay();
         play.selectionSort(numberArr.clone());
+        play.bubbleSort(numberArr.clone());
     }
 
     private void selectionSort(int[] arr) {
@@ -25,5 +26,9 @@ public class SortingPlay {
             arr[minIdx] = temp;
         }
         System.out.println(STR."Sorted array is \{Arrays.toString(arr)}");
+    }
+
+    private void bubbleSort(int[] arr) {
+
     }
 }
