@@ -8,14 +8,14 @@ import java.util.Optional;
   A HashMap<K, V> in Java stores key-value pairs, where:
     Keys are unique
     Values can be duplicated
-    It provides constant-time average performance for put, get, remove, and containsKey — O(1) on average.
+    It provides constant-time average performance for put, get, remove, and containsKey O(1) on average.
 
   Think of a HashMap like a dictionary:
     You look up a word (key) → get the definition (value).
     You can’t have the same word twice (keys must be unique).
     Different words may have the same meaning (values can repeat).
 
- 📚 When to Use HashMap
+  When to Use HashMap
     Fast lookups by key
     Counting occurrences (frequency maps)
     Caching

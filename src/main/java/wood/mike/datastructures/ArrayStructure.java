@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 /**
  * An array is a fixed-size, indexed collection of elements of the same type.
- * ✅ Key Characteristics:
+ * Key Characteristics:
  * Stored in contiguous memory
  * Indexed access (arr[i]) is O(1) — very fast
  * Size is fixed at creation
@@ -12,7 +12,7 @@ import java.util.HashSet;
  */
 public class ArrayStructure {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         int[] numbers = {12, 45, 7, 89, 23};
         int max = findMax(numbers);
         System.out.println(STR."Max value: \{max}");    // should be 89
