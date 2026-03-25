@@ -18,7 +18,7 @@ public class FileStuff {
 
         // files ending in .java only
         Files.newDirectoryStream(
-                        Paths.get(".\\src\\main\\java\\wood\\mike\\functional"),
+                        Paths.get("./src/main/java/wood/mike/functional"),
                         path -> path.toString().endsWith(".java"))
                 .forEach(System.out::println);
 

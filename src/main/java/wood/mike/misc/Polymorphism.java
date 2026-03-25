@@ -3,15 +3,17 @@ package wood.mike.misc;
 import java.util.List;
 
 /**
- * Compile time polymorphism aka static polymorphism is achieved in Java through method overloading, same method name with different arguments
+ * Compile time polymorphism aka static polymorphism is achieved in Java through method overloading,
+ * same method name with different arguments.
  * Methods rpe and rpeDescription are overloaded in Exercise
- *
- * Runtime polymorphism aka dynamic binding/dynamic method dispatch is achieved in Java with method overriding, where a subclass implements a parent class method
- * perform and difficulty are overridden in subclasses of Exercise
+ * <p>
+ * Runtime polymorphism aka dynamic binding/dynamic method dispatch is achieved in Java with
+ * method overriding, where a subclass implements a parent class method.
+ * Methods perform and difficulty are overridden in subclasses of Exercise
  *
  */
 public class Polymorphism {
-    public static void main(String[] args) {
+    static void main(String[] args) {
         List.of(new Deadlift(), new Squat(), new Crunch(), new BenchPress(), new DubellCurl()).forEach(
                 exercise -> {
                     var reps = 12;

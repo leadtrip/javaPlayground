@@ -153,7 +153,7 @@ public class Streams {
     }
 
     /**
-     * Accumulates the elements of this stream into a Lis
+     * Accumulates the elements of this stream into a List
      */
     private static void toList() {
         System.out.println("\n++\n");
@@ -176,7 +176,7 @@ public class Streams {
         StringBuilder result = vowels.stream()
                 .collect(
                         StringBuilder::new,                     // identity
-                        (x, y) -> x.append(y),                  // accumulator
+                        StringBuilder::append,                  // accumulator
                         (a, b) -> a.append(",").append(b));     // combiner - not used here as elements are processed sequentially so no need to combine
         System.out.println(result.toString());  // aeiou
 
@@ -543,7 +543,7 @@ public class Streams {
         System.out.println("\n+filter+\n");
         List<String> onlyNs = friends.stream()
                 .filter(s -> s.startsWith("N"))
-                .collect(Collectors.toList());
+                .toList();
 
         assert onlyNs.containsAll( Arrays.asList("Nate", "Neal") );
 

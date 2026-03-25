@@ -29,8 +29,8 @@
         <gson.version>2.9.0</gson.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
-        <lombok.version>1.18.30</lombok.version>
-        <slf4j-api.version>1.7.36</slf4j-api.version>
+        <lombok.version>1.18.44</lombok.version>
+        <slf4j-api.version>2.0.17</slf4j-api.version>
         <junit-jupiter-engine.version>5.8.2</junit-jupiter-engine.version>
         <junit-platform-launcher.version>1.8.2</junit-platform-launcher.version>
         <netty-all.version>4.1.75.Final</netty-all.version>
@@ -89,9 +89,14 @@
             <version>${slf4j-api.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j-api.version}</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.32</version>
+        </dependency>
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+            <version>2.4.2</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

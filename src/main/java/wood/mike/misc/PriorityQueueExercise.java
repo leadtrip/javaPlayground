@@ -8,7 +8,7 @@ import java.util.PriorityQueue;
 
 public class PriorityQueueExercise {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         naturalOrdering();
         comparatorOrdering();
         comparingPersons();

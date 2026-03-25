@@ -18,7 +18,7 @@ import static java.util.List.of;
  */
 public class GenericsExercise {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
 
         List<Xob<String>> xobs = xobs(of("Welcome", "To", "The", "Jungle"));
 
