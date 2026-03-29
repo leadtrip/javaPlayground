@@ -7,11 +7,5 @@ public interface ItsoElement {
      */
     String toTransportFormat();
 
-    /**
-     * Optional: Returns the raw bit-length if the spec
-     * requires padding or specific alignment.
-     */
-    default int bitLength() {
-        return 0;
-    }
+
 }

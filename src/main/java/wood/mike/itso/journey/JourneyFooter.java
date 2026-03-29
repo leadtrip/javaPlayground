@@ -12,6 +12,21 @@ public class JourneyFooter implements MessageData{
     private long ipeIsamSequenceNumber;
     private String itsoShellReferenceNumberEncrypted;
 
+    public JourneyFooter setIpeIterationNumber(long ipeIterationNumber) {
+        this.ipeIterationNumber = ipeIterationNumber;
+        return this;
+    }
+
+    public JourneyFooter setIpeIsamSequenceNumber(long ipeIsamSequenceNumber) {
+        this.ipeIsamSequenceNumber = ipeIsamSequenceNumber;
+        return this;
+    }
+
+    public JourneyFooter setItsoShellReferenceNumberEncrypted(String itsoShellReferenceNumberEncrypted) {
+        this.itsoShellReferenceNumberEncrypted = itsoShellReferenceNumberEncrypted;
+        return this;
+    }
+
     @Override
     public List<ItsoElement> getFields() {
         return List.of(

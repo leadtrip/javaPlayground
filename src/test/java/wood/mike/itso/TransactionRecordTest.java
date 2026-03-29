@@ -10,7 +10,7 @@ public class TransactionRecordTest {
     @Test
     public void testToTransportFormat() {
         TransactionRecord record = new TransactionRecord();
-        record.setStandarElements(getStandardElements());
+        record.setStandardElements(getStandardElements());
 
         System.out.println(record.toTransportFormat());
     }

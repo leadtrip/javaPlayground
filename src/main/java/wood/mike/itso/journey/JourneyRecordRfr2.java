@@ -2,19 +2,15 @@ package wood.mike.itso.journey;
 
 import wood.mike.itso.StandardElements;
 
-public class JourneyRecordRfr4 extends AbstractJourneyRecord{
+public class JourneyRecordRfr2 extends AbstractJourneyRecord{
 
-    public JourneyRecordRfr4(
+    public JourneyRecordRfr2(
             StandardElements standard,
             JourneyCore core,
-            Rfr3Extension rfr3,
-            Rfr4EntryExtension entry,
             JourneyFooter footer
     ) {
         fields.add(standard);
         fields.addAll(core.getFields());
-        fields.addAll(rfr3.getFields());
-        fields.addAll(entry.getFields());
         fields.addAll(footer.getFields());
     }
 }

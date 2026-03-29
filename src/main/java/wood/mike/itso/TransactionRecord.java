@@ -4,7 +4,7 @@ public class TransactionRecord implements ItsoElement{
 
     private StandardElements standardElements;
 
-    public TransactionRecord setStandarElements(final StandardElements standardElements) {
+    public TransactionRecord setStandardElements(final StandardElements standardElements) {
         this.standardElements = standardElements;
         return this;
     }
