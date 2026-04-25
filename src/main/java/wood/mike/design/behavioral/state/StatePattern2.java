@@ -1,5 +1,8 @@
 package wood.mike.design.behavioral.state;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * State pattern, allows an object to alter its behavior when its internal state changes
  *
@@ -25,20 +28,14 @@ public class StatePattern2 {
 // the request or context
 
 class Request {
+    @Setter
+    @Getter
     RequestState state;
     Long id;
 
     public Request( Long id ) {
         this.id = id;
         this.state = Received.getInstance();
-    }
-
-    public RequestState getState() {
-        return state;
-    }
-
-    public void setState(RequestState state) {
-        this.state = state;
     }
 
     public void update() {
@@ -57,13 +54,10 @@ interface RequestState{
 
 class Received implements RequestState {
 
+    @Getter
     private static final Received instance = new Received();
 
     private Received() {}
-
-    public static Received getInstance() {
-        return instance;
-    }
 
     @Override
     public void updateState(Request request) {
@@ -76,13 +70,10 @@ class Received implements RequestState {
 
 class Validated implements RequestState {
 
+    @Getter
     private static final Validated instance = new Validated();
 
     private Validated() {}
-
-    public static Validated getInstance() {
-        return instance;
-    }
 
     @Override
     public void updateState(Request request) {
@@ -94,13 +85,10 @@ class Validated implements RequestState {
 // -------------------------------------------------
 
 class SentToHops implements RequestState {
+    @Getter
     private static final SentToHops instance = new SentToHops();
 
     private SentToHops() {}
-
-    public static SentToHops getInstance() {
-        return instance;
-    }
 
     @Override
     public void updateState(Request request) {
@@ -112,13 +100,10 @@ class SentToHops implements RequestState {
 // -------------------------------------------------
 
 class SentToPost implements RequestState {
+    @Getter
     private static final SentToPost instance = new SentToPost();
 
     private SentToPost() {}
-
-    public static SentToPost getInstance() {
-        return instance;
-    }
 
     @Override
     public void updateState(Request request) {
@@ -130,13 +115,10 @@ class SentToPost implements RequestState {
 // -------------------------------------------------
 
 class Complete implements RequestState {
+    @Getter
     private static final Complete instance = new Complete();
 
     private Complete() {}
-
-    public static Complete getInstance() {
-        return instance;
-    }
 
     @Override
     public void updateState(Request request) {
