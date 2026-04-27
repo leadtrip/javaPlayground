@@ -45,6 +45,11 @@ class OldRag implements DriveTrainCleaningStrategy {
         System.out.printf( "Scrubbing %s groupset with old rag%n", driveTrain );
     }
 }
+
+class RemoveAndSoak implements DriveTrainCleaningStrategy {
+    @Override
+    public void clean(String driveTrain) { System.out.printf("Removing %s chain from bike, and soaking in mineral spirits%n", driveTrain); }
+}
 // ---------------------------------------------------------------------
 
 /**
