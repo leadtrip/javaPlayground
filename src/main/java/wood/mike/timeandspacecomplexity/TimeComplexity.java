@@ -65,11 +65,11 @@ public class TimeComplexity {
         System.out.println(STR."Bob's age: \{age}");
     }
 
-    /*
-     O(n) or linear time
+    /**
+        O(n) or linear time
 
-     An algorithm is O(n) if the time it takes grows linearly with the size of the input (n)
-     */
+        An algorithm is O(n) if the time it takes grows linearly with the size of the input (n)
+     **/
     private void linearTime() {
         // Example 1: Loop through an Array
         int[] numbers = {10, 20, 30, 40, 50};
@@ -90,14 +90,14 @@ public class TimeComplexity {
         System.out.println(STR."Max score: \{max}");
     }
 
-    /*
-     O(n²) or quadratic time
+    /**
+         O(n²) or quadratic time
 
-     An algorithm is O(n²) if the time it takes grows proportional to the square of the input size.
-     If the input size doubles, the time grows 4× (2²).
-     If the input triples, the time grows 9× (3²).
-     Quadratic time often comes from nested loops, where for every element you do work involving every other element.
-     */
+         An algorithm is O(n²) if the time it takes grows proportional to the square of the input size.
+         If the input size doubles, the time grows 4× (2²).
+         If the input triples, the time grows 9× (3²).
+         Quadratic time often comes from nested loops, where for every element you do work involving every other element.
+     **/
     private void quadraticTime() {
         // Example 1: Comparing Every Pair
         int[] nums = {1, 2, 3};
@@ -127,15 +127,15 @@ public class TimeComplexity {
     }
 
     /**
-     O(log n) or logarithmic time
+         O(log n) or logarithmic time
 
-     An algorithm is O(log n) if it cuts the input size down by half (or some constant fraction) at each step.
-     If the input doubles, the number of steps increases only slightly.
-     This is much faster than O(n) or O(n²) for large inputs.
+         An algorithm is O(log n) if it cuts the input size down by half (or some constant fraction) at each step.
+         If the input doubles, the number of steps increases only slightly.
+         This is much faster than O(n) or O(n²) for large inputs.
 
-     Imagine guessing a number between 1 and 100:
-     If you guess 50, then 25, then 12, etc., you're halving the range each time.
-     That’s a binary search — classic O(log n).
+         Imagine guessing a number between 1 and 100:
+         If you guess 50, then 25, then 12, etc., you're halving the range each time.
+         That’s a binary search — classic O(log n).
      */
     private void logarithmicTime() {
         boolean found = binarySearch(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 2);
@@ -161,11 +161,11 @@ public class TimeComplexity {
     }
 
     /**
-     O(n log n)
+         O(n log n)
 
-     O(n log n) occurs when:
-     You process all n elements, but for each element (or in total), you also do log n work.
-     It’s faster than O(n²), but slower than O(n).
+         O(n log n) occurs when:
+         You process all n elements, but for each element (or in total), you also do log n work.
+         It’s faster than O(n²), but slower than O(n).
      */
     private void ohNlogN() {
         mergeSort(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
